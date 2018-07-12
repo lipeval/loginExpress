@@ -3,6 +3,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const sendWelcomeMail = require('../helpers/mailer').sendWelcomeMail;
+const sendTemplate = require('../helpers/mailer').sendTemplate;
 
 function isAuthenticated(req,res,next){
     if(req.isAuthenticated()){
@@ -73,6 +74,7 @@ router.post('/signup', (req,res,next)=>{
     User.register(req.body, req.body.password)
     .then(user=>{
         sendWelcomeMail(user);
+        sendTemplate(user);
         res.redirect('/login')
 })
     .catch(e=>next(e));
